@@ -1,0 +1,35 @@
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/objdetect.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+//Face detection
+int main() {
+
+    string path = "Resources/test.png";
+    Mat img = imread(path);
+
+    CascadeClassifier faceCascade;
+    faceCascade.load("Resources/haarcascade_frontalface_default.xml"); //Load Classifier
+    
+    if (faceCascade.empty()) {cout << "XML file not loaded" << endl;} //Check if file is present
+
+    vector<Rect> faces; //Stores rectangles to bound face
+    faceCascade.detectMultiScale(img, faces, 1.1, 10); //Detect Face
+
+    for (int i = 0; i < faces.size();i++) {
+        rectangle(img, faces[i].tl(), faces[i].br(), Scalar(255, 0, 255), 3); //Draw rectangles to bound face
+
+    }
+
+    imshow("Image", img);
+    waitKey(0);
+
+
+
+	return 0;
+}
